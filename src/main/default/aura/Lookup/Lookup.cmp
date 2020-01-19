@@ -8,8 +8,10 @@
 
     <aura:attribute access="private" type="String" name="searchTerm" default="" />
     <aura:attribute access="private" type="String" name="cleanSearchTerm" default="" />
+    <aura:attribute access="private" type="String" name="ariaActiveDescendant" default="" />
     <aura:attribute access="private" type="List" name="searchResults" default="[]" />
     <aura:attribute access="private" type="Boolean" name="hasFocus" default="false" />
+    <aura:attribute access="private" type="Integer" name="ariaIndex" default="-1" />
     <aura:attribute access="private" type="Map" name="blurTimeout" />
     <aura:attribute access="private" type="Map" name="searchThrottlingTimeout" />
 
@@ -32,9 +34,9 @@
                         <!-- Multi-entry combobox start -->
                         <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
                             <input type="text" class="{! 'slds-input slds-combobox__input has-custom-height ' + (!empty(v.errors) ? 'has-custom-error' : '') }"
-                                aria-autocomplete="list" aria-controls="{# globalId + '_listbox' }" autocomplete="off"
+                                aria-autocomplete="list" aria-controls="{# globalId + '_listbox' }" aria-activedescendant="{!v.ariaActiveDescendant}" autocomplete="off"
                                 role="textbox" id="{# globalId + '_combobox' }" aura:id="searchInput" placeholder="{!v.placeholder}"
-                                value="{!v.searchTerm}" onfocus="{!c.onFocus}" onblur="{!c.onBlur}" oninput="{!c.onInput}" />
+                                value="{!v.searchTerm}" onfocus="{!c.onFocus}" onblur="{!c.onBlur}" oninput="{!c.onInput}" onkeydown="{!c.onKeyDown}" />
 
                             <!-- search icon and spinner -->
                             <div aura:id="spinner" role="presentation" class="slds-hide slds-input__icon slds-input__icon_right slds-is-relative">
@@ -56,10 +58,10 @@
                                 <lightning:icon iconName="{! empty(v.selection[0].icon) ? 'standard:default' : v.selection[0].icon}"
                                     size="small" alternativeText="Selected item icon" class="{! 'slds-combobox__input-entity-icon '+ (empty(v.selection) ? 'slds-hide' : '') }" />
                                 <input type="text" class="{! 'slds-input slds-combobox__input slds-combobox__input-value has-custom-height ' + (!empty(v.errors) ? 'has-custom-error' : '') + (!empty(v.selection) ? ' has-custom-border' : '') }"
-                                    aria-autocomplete="list" aria-controls="{# globalId + '_listbox' }" autocomplete="off"
+                                    aria-autocomplete="list" aria-controls="{# globalId + '_listbox' }" aria-activedescendant="{!v.ariaActiveDescendant}" autocomplete="off"
                                     role="textbox" id="{# globalId + '_combobox' }" aura:id="searchInput" placeholder="{!v.placeholder}"
                                     value="{! empty(v.selection) ? '' : v.selection[0].title }" onfocus="{!c.onFocus}"
-                                    onblur="{!c.onBlur}" oninput="{!c.onInput}" readonly="{! !empty(v.selection) }" />
+                                    onblur="{!c.onBlur}" oninput="{!c.onInput}" onkeydown="{!c.onKeyDown}" readonly="{! !empty(v.selection) }" />
 
                                 <!-- search icon and spinner -->
                                 <div aura:id="spinner" role="presentation" class="slds-hide slds-input__icon slds-input__icon_right slds-is-relative">

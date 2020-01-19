@@ -61,6 +61,22 @@
         helper.updateSearchTerm(component, newSearchTerm);
     },
 
+    onKeyDown : function(component, event, helper) {
+        // Determine which arrow key was pressed
+        switch(event.keyCode) {
+            case 38:
+                // Do up arrow
+                helper.upArrow(component);
+                break;
+            case 40:
+                // Do up arrow
+                helper.downArrow(component);
+                break;
+            default:
+                component.set('v.ariaActiveDescendant', '');
+        }  // End switch
+    },
+
     onResultClick : function(component, event, helper) {
         const recordId = event.currentTarget.id;
         helper.selectResult(component, recordId);

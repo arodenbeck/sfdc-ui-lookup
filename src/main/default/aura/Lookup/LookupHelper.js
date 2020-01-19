@@ -79,6 +79,33 @@
         return component.get('v.isMultiEntry') || component.get('v.selection').length === 0;
     },
 
+    downArrow : function(component) {
+        var ariaIndex = component.get('v.ariaIndex');
+        const searchResults = component.get('v.searchResults');
+        if(searchResults.length !== 0 && ariaIndex < searchResults.length) {
+            ariaIndex++;
+            component.set('v.ariaIndex', ariaIndex);
+            this.setAriaActiveDescendant(component);
+        }  // End the ariaIndex is less than the number of selections
+    },
+
+    upArrow : function(component) {
+        var ariaIndex = component.get('v.ariaIndex');
+        const searchResults = component.get('v.searchResults');
+        if(searchResults.length !== 0 && ariaIndex > 0) {
+            ariaIndex--;
+            component.set('v.ariaIndex', ariaIndex);
+            this.setAriaActiveDescendant(component);
+        }  // End if ariaIndex is greater than 0 
+    },
+
+    setAriaActiveDescendant : function(component) {
+        const searchResults = component.get('v.searchResults');
+        const ariaIndex = component.get('variaIndex');
+        var activeId = searchResults[ariaIndex].Id;
+        component.set('v.ariaActiveDescendant', activeId);
+    },
+
     toggleSearchSpinner : function(component) {
         const spinner = component.find('spinner');
         const searchIcon = component.find('search-icon');
